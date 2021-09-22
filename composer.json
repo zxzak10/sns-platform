@@ -1,0 +1,22 @@
+{
+    "name": "wotong/sns-platform",
+    "type": "library",
+    "description": "集成第三方社交平台的sdk",
+    "keywords": ["sns sdk", "Third party login"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Wutong",
+            "email": "65761066@qq.com"
+        }
+    ],
+    "require": {
+        "guzzlehttp/guzzle": "^7.0.1",
+        "ext-json": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Wutong\\Sns\\": "src/"
+        }
+    }
+}
