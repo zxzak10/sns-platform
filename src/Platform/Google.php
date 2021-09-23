@@ -4,7 +4,7 @@ namespace Wutong\Sns\Platform;
 
 use GuzzleHttp\Client;
 
-class Weibo implements Oauth
+class Google implements Oauth
 {
     /**
      * 静态私有的变量保存该类对象
@@ -49,11 +49,12 @@ class Weibo implements Oauth
     /**
      * 获取实例对象的方法
      *
-     * @return object|Weibo
+     * @param array $config
+     * @return object|Google
      */
     public static function getInstance(array $config)
     {
-        if (!(self::$_instance instanceof Weibo)) {
+        if (!(self::$_instance instanceof Google)) {
             self::$_instance = new self($config);
         }
 
@@ -65,11 +66,15 @@ class Weibo implements Oauth
      */
     public function authorize()
     {
-        $url = 'https://api.weibo.com/oauth2/authorize';
+        $url = 'https://accounts.google.com/o/oauth2/auth';
 
         $query = array_filter([
             'client_id'     => $this->config['client_id'],
+            'response_type' => 'code',
+            'access_type'   => 'offline',
             'redirect_uri'  => $this->config['redirect_uri'],
+            'scope'         => 'https://www.googleapis.com/auth/userinfo.profile',
+            'state'         => '',
         ]);
 
         $url = $url.'?'.http_build_query($query);
@@ -86,7 +91,11 @@ class Weibo implements Oauth
      */
     public function getAccessToken(string $code)
     {
-        $url = 'https://api.weibo.com/oauth2/access_token';
+        if (empty($code)) {
+            return [];
+        }
+
+        $url = 'https://oauth2.googleapis.com/token';
 
         $params = array_filter([
             'client_id'     => $this->config['client_id'],
@@ -115,17 +124,13 @@ class Weibo implements Oauth
      */
     public function getUserInfo(string $access_token)
     {
-        $url = 'https://api.weibo.com/2/users/show.json';
-
-        $tokenInfo = $this->getTokenInfo($access_token);
-        if (!empty($tokenInfo['error_code'])) {
-            return $tokenInfo;
+        if (empty($access_token)) {
+            return [];
         }
 
-        $uid = empty($tokenInfo['uid']) ? '' : $tokenInfo['uid'];
+        $url = 'https://www.googleapis.com/oauth2/v1/userinfo';
 
         $params = array_filter([
-            'uid'           => $uid,
             'access_token'  => $access_token,
         ]);
 
@@ -135,32 +140,8 @@ class Weibo implements Oauth
             return $res;
 
         }catch (\GuzzleHttp\Exception\RequestException $e){
-            return json_decode($e->getResponse()->getBody()->getContents(), true);
-        }
-    }
-
-    /**
-     * 授权信息查询
-     *
-     * @param string $access_token 用户授权的唯一票据
-     * @return mixed
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     */
-    public function getTokenInfo(string $access_token)
-    {
-        try{
-            $url = 'https://api.weibo.com/oauth2/get_token_info';
-            $params = [
-                'access_token' => $access_token
-            ];
-
-            $res = self::$http->post($url, ['query' => $params]);
-            $res = json_decode($res->getBody()->getContents(), true);
-
+            $res = json_decode($e->getResponse()->getBody()->getContents(), true);
             return $res;
-
-        }catch (\GuzzleHttp\Exception\RequestException $e){
-            return json_decode($e->getResponse()->getBody()->getContents(), true);
         }
     }
 
