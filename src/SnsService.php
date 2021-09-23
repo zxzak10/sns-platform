@@ -23,9 +23,9 @@ class SnsService
      * @var array
      */
     protected static $config = [
-        'client_id'     => '2769',
-        'redirect_uri'  => 'http://cloud2.smartfenda.com/health/account/public/callback/weibo',
-        'client_secret' => '919483cc0829c835e',
+        'client_id'     => '',
+        'redirect_uri'  => '',
+        'client_secret' => '',
     ];
 
     /**
