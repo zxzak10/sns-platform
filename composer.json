@@ -1,7 +1,7 @@
 {
     "name": "wotong/sns-platform",
     "type": "library",
-    "description": "sns-platform 是集成第三方社交平台的功能的扩展包",
+    "description": "sns-platform 是集成第三方社交平台功能的扩展包",
     "keywords": ["SNS", "Third party login", "第三方登录"],
     "license": "MIT",
     "authors": [
