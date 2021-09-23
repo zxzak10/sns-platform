@@ -1,7 +1,7 @@
 {
     "name": "wotong/sns-platform",
     "type": "library",
-    "description": "集成第三方社交平台的sdk",
+    "description": "集成第三方社交平台的SDK",
     "keywords": ["sns sdk", "Third party login"],
     "license": "MIT",
     "authors": [
