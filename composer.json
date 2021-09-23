@@ -1,5 +1,5 @@
 {
-    "name": "wutong/sns-platform",
+    "name": "fd/sns-platform",
     "type": "library",
     "description": "sns-platform 是集成第三方社交平台功能的扩展包",
     "keywords": ["SNS", "Third party login", "第三方登录"],
