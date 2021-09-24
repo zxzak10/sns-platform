@@ -6,5 +6,5 @@ sns-platform 是集成第三方社交平台功能的扩展包
 
 ## 安装方式
 ```shell
-composer require wotong/sns-platform
+composer require fenda/sns-platform
 ```
