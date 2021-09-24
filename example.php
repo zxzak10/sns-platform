@@ -10,10 +10,10 @@ use Wutong\Sns\SnsService;
 
 //配置信息数组，根据实际应用场景进行选择存放位置
 $config = [
-    'platform'      => 'Google',
-    'client_id'     => '599823881761-rs72vthsska4uoqi610l603btmvei3um.apps.googleusercontent.com',
-    'client_secret' => 'ikwsoJhFU8LpLnj8HdWxkj3w',
-    'redirect_uri'  => 'http://cloud2.smartfenda.com/health/account/public/callback/google'
+    'platform'      => '',
+    'client_id'     => '',
+    'client_secret' => '',
+    'redirect_uri'  => ''
 ];
 
 //获取实例化对象
