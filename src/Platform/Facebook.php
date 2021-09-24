@@ -4,7 +4,7 @@ namespace Wutong\Sns\Platform;
 
 use GuzzleHttp\Client;
 
-class Google implements Oauth
+class Facebook implements Oauth
 {
     /**
      * 静态私有的变量保存该类对象
@@ -54,7 +54,7 @@ class Google implements Oauth
      */
     public static function getInstance(array $config)
     {
-        if (!(self::$_instance instanceof Google)) {
+        if (!(self::$_instance instanceof Facebook)) {
             self::$_instance = new self($config);
         }
 
@@ -66,15 +66,13 @@ class Google implements Oauth
      */
     public function authorize()
     {
-        $url = 'https://accounts.google.com/o/oauth2/auth';
+        $url = 'https://www.facebook.com/v12.0/dialog/oauth';
 
         $query = array_filter([
             'client_id'     => $this->config['client_id'],
             'response_type' => 'code',
-            'access_type'   => 'offline',
             'redirect_uri'  => $this->config['redirect_uri'],
-            'scope'         => 'https://www.googleapis.com/auth/userinfo.profile',
-            'state'         => '',
+            'state'         => ''
         ]);
 
         $url = $url.'?'.http_build_query($query);
@@ -95,12 +93,11 @@ class Google implements Oauth
             return [];
         }
 
-        $url = 'https://oauth2.googleapis.com/token';
+        $url = 'https://graph.facebook.com/v12.0/oauth/access_token';
 
         $params = array_filter([
             'client_id'     => $this->config['client_id'],
             'client_secret' => $this->config['client_secret'],
-            'grant_type'    => 'authorization_code',
             'code'          => $code,
             'redirect_uri'  => $this->config['redirect_uri']
         ]);
@@ -128,10 +125,11 @@ class Google implements Oauth
             return [];
         }
 
-        $url = 'https://www.googleapis.com/oauth2/v1/userinfo';
+        $url = 'https://graph.facebook.com/v12.0/me';
 
         $params = array_filter([
             'access_token'  => $access_token,
+            'fields'        => 'id,name,picture',
         ]);
 
         try{

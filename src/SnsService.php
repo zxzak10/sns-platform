@@ -2,6 +2,7 @@
 
 namespace Wutong\Sns;
 
+use Wutong\Sns\Platform\Facebook;
 use Wutong\Sns\Platform\Weibo;
 use Wutong\Sns\Platform\Google;
 
@@ -14,7 +15,8 @@ class SnsService
      */
     protected static $platform = [
         'weibo',
-        'google'
+        'google',
+        'facebook'
     ];
 
     /**
@@ -33,7 +35,7 @@ class SnsService
      * 服务初始化
      *
      * @param array $config 配置信息数组
-     * @return false|object|Weibo|Google
+     * @return false|object|Weibo|Google|Facebook
      */
     public static function initialize(array $config)
     {
@@ -58,6 +60,10 @@ class SnsService
 
             case 'google':
                 return Google::getInstance($config);
+                break;
+
+            case 'facebook':
+                return Facebook::getInstance($config);
                 break;
         }
     }
