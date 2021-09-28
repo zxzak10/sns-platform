@@ -68,12 +68,12 @@ class Weibo implements Oauth
         $url = 'https://api.weibo.com/oauth2/authorize';
 
         $query = array_filter([
-            'client_id'     => $this->config['client_id'],
-            'redirect_uri'  => $this->config['redirect_uri'],
+            'client_id'    => $this->config['client_id'],
+            'redirect_uri' => $this->config['redirect_uri'],
         ]);
 
-        $url = $url.'?'.http_build_query($query);
-        header('Location:'.$url);
+        $url = $url . '?' . http_build_query($query);
+        header('Location:' . $url);
         exit();
     }
 
@@ -96,12 +96,12 @@ class Weibo implements Oauth
             'redirect_uri'  => $this->config['redirect_uri']
         ]);
 
-        try{
+        try {
             $res = self::$http->request('POST', $url, ['query' => $params]);
             $res = json_decode($res->getBody()->getContents(), true);
             return $res;
 
-        }catch (\GuzzleHttp\Exception\RequestException $e){
+        } catch (\GuzzleHttp\Exception\RequestException $e) {
             return json_decode($e->getResponse()->getBody()->getContents(), true);
         }
     }
@@ -125,16 +125,16 @@ class Weibo implements Oauth
         $uid = empty($tokenInfo['uid']) ? '' : $tokenInfo['uid'];
 
         $params = array_filter([
-            'uid'           => $uid,
-            'access_token'  => $access_token,
+            'uid'          => $uid,
+            'access_token' => $access_token,
         ]);
 
-        try{
+        try {
             $res = self::$http->request('GET', $url, ['query' => $params]);
             $res = json_decode($res->getBody()->getContents(), true);
             return $res;
 
-        }catch (\GuzzleHttp\Exception\RequestException $e){
+        } catch (\GuzzleHttp\Exception\RequestException $e) {
             return json_decode($e->getResponse()->getBody()->getContents(), true);
         }
     }
@@ -148,7 +148,7 @@ class Weibo implements Oauth
      */
     public function getTokenInfo(string $access_token)
     {
-        try{
+        try {
             $url = 'https://api.weibo.com/oauth2/get_token_info';
             $params = [
                 'access_token' => $access_token
@@ -159,7 +159,7 @@ class Weibo implements Oauth
 
             return $res;
 
-        }catch (\GuzzleHttp\Exception\RequestException $e){
+        } catch (\GuzzleHttp\Exception\RequestException $e) {
             return json_decode($e->getResponse()->getBody()->getContents(), true);
         }
     }

@@ -75,8 +75,8 @@ class Facebook implements Oauth
             'state'         => ''
         ]);
 
-        $url = $url.'?'.http_build_query($query);
-        header('Location:'.$url);
+        $url = $url . '?' . http_build_query($query);
+        header('Location:' . $url);
         exit();
     }
 
@@ -102,12 +102,12 @@ class Facebook implements Oauth
             'redirect_uri'  => $this->config['redirect_uri']
         ]);
 
-        try{
+        try {
             $res = self::$http->request('POST', $url, ['query' => $params]);
             $res = json_decode($res->getBody()->getContents(), true);
             return $res;
 
-        }catch (\GuzzleHttp\Exception\RequestException $e){
+        } catch (\GuzzleHttp\Exception\RequestException $e) {
             return json_decode($e->getResponse()->getBody()->getContents(), true);
         }
     }
@@ -128,16 +128,16 @@ class Facebook implements Oauth
         $url = 'https://graph.facebook.com/v12.0/me';
 
         $params = array_filter([
-            'access_token'  => $access_token,
-            'fields'        => 'id,name,picture',
+            'access_token' => $access_token,
+            'fields'       => 'id,name,picture',
         ]);
 
-        try{
+        try {
             $res = self::$http->request('GET', $url, ['query' => $params]);
             $res = json_decode($res->getBody()->getContents(), true);
             return $res;
 
-        }catch (\GuzzleHttp\Exception\RequestException $e){
+        } catch (\GuzzleHttp\Exception\RequestException $e) {
             $res = json_decode($e->getResponse()->getBody()->getContents(), true);
             return $res;
         }
