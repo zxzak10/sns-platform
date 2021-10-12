@@ -3,6 +3,8 @@
 namespace Wutong\Sns\Platform;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Exception\RequestException;
 
 class Facebook implements Oauth
 {
@@ -33,7 +35,7 @@ class Facebook implements Oauth
         $this->config = $config;
 
         //判断HTTP客户端实例对象是否是Client实例
-        if ((!self::$http instanceof Client)) {
+        if (!self::$http instanceof Client) {
             self::$http = new Client();
         }
     }
@@ -85,9 +87,9 @@ class Facebook implements Oauth
      *
      * @param string $code 授权码
      * @return array
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
-    public function getAccessToken(string $code)
+    public function getAccessToken(string $code): array
     {
         if (empty($code)) {
             return [];
@@ -107,7 +109,7 @@ class Facebook implements Oauth
             $res = json_decode($res->getBody()->getContents(), true);
             return $res;
 
-        } catch (\GuzzleHttp\Exception\RequestException $e) {
+        } catch (RequestException $e) {
             return json_decode($e->getResponse()->getBody()->getContents(), true);
         }
     }
@@ -117,9 +119,9 @@ class Facebook implements Oauth
      *
      * @param string $access_token 用户授权的唯一票据
      * @return array
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
-    public function getUserInfo(string $access_token)
+    public function getUserInfo(string $access_token): array
     {
         if (empty($access_token)) {
             return [];
@@ -137,7 +139,7 @@ class Facebook implements Oauth
             $res = json_decode($res->getBody()->getContents(), true);
             return $res;
 
-        } catch (\GuzzleHttp\Exception\RequestException $e) {
+        } catch (RequestException $e) {
             $res = json_decode($e->getResponse()->getBody()->getContents(), true);
             return $res;
         }

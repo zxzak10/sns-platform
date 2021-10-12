@@ -3,6 +3,8 @@
 namespace Wutong\Sns\Platform;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Exception\RequestException;
 
 class Weibo implements Oauth
 {
@@ -49,9 +51,10 @@ class Weibo implements Oauth
     /**
      * 获取实例对象的方法
      *
+     * @param array $config
      * @return object|Weibo
      */
-    public static function getInstance(array $config)
+    public static function getInstance(array $config): Weibo
     {
         if (!(self::$_instance instanceof Weibo)) {
             self::$_instance = new self($config);
@@ -82,7 +85,7 @@ class Weibo implements Oauth
      *
      * @param string $code 授权码
      * @return mixed
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public function getAccessToken(string $code)
     {
@@ -101,7 +104,7 @@ class Weibo implements Oauth
             $res = json_decode($res->getBody()->getContents(), true);
             return $res;
 
-        } catch (\GuzzleHttp\Exception\RequestException $e) {
+        } catch (RequestException $e) {
             return json_decode($e->getResponse()->getBody()->getContents(), true);
         }
     }
@@ -111,7 +114,7 @@ class Weibo implements Oauth
      *
      * @param string $access_token 用户授权的唯一票据
      * @return mixed
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public function getUserInfo(string $access_token)
     {
@@ -134,7 +137,7 @@ class Weibo implements Oauth
             $res = json_decode($res->getBody()->getContents(), true);
             return $res;
 
-        } catch (\GuzzleHttp\Exception\RequestException $e) {
+        } catch (RequestException $e) {
             return json_decode($e->getResponse()->getBody()->getContents(), true);
         }
     }
@@ -144,7 +147,7 @@ class Weibo implements Oauth
      *
      * @param string $access_token 用户授权的唯一票据
      * @return mixed
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public function getTokenInfo(string $access_token)
     {
@@ -159,7 +162,7 @@ class Weibo implements Oauth
 
             return $res;
 
-        } catch (\GuzzleHttp\Exception\RequestException $e) {
+        } catch (RequestException $e) {
             return json_decode($e->getResponse()->getBody()->getContents(), true);
         }
     }

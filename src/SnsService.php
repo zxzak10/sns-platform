@@ -56,15 +56,15 @@ class SnsService
         switch ($platform) {
             case 'weibo':
                 return Weibo::getInstance($config);
-                break;
 
             case 'google':
                 return Google::getInstance($config);
-                break;
 
             case 'facebook':
                 return Facebook::getInstance($config);
-                break;
+
+            default:
+                return false;
         }
     }
 

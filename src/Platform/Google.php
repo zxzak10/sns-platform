@@ -3,6 +3,8 @@
 namespace Wutong\Sns\Platform;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Exception\RequestException;
 
 class Google implements Oauth
 {
@@ -52,7 +54,7 @@ class Google implements Oauth
      * @param array $config
      * @return object|Google
      */
-    public static function getInstance(array $config)
+    public static function getInstance(array $config): Google
     {
         if (!(self::$_instance instanceof Google)) {
             self::$_instance = new self($config);
@@ -87,9 +89,9 @@ class Google implements Oauth
      *
      * @param string $code 授权码
      * @return array
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
-    public function getAccessToken(string $code)
+    public function getAccessToken(string $code): array
     {
         if (empty($code)) {
             return [];
@@ -110,7 +112,7 @@ class Google implements Oauth
             $res = json_decode($res->getBody()->getContents(), true);
             return $res;
 
-        } catch (\GuzzleHttp\Exception\RequestException $e) {
+        } catch (RequestException $e) {
             return json_decode($e->getResponse()->getBody()->getContents(), true);
         }
     }
@@ -120,9 +122,9 @@ class Google implements Oauth
      *
      * @param string $access_token 用户授权的唯一票据
      * @return array
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
-    public function getUserInfo(string $access_token)
+    public function getUserInfo(string $access_token): array
     {
         if (empty($access_token)) {
             return [];
@@ -139,7 +141,7 @@ class Google implements Oauth
             $res = json_decode($res->getBody()->getContents(), true);
             return $res;
 
-        } catch (\GuzzleHttp\Exception\RequestException $e) {
+        } catch (RequestException $e) {
             $res = json_decode($e->getResponse()->getBody()->getContents(), true);
             return $res;
         }
